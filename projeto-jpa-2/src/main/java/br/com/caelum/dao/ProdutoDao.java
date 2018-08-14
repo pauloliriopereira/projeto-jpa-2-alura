@@ -1,6 +1,5 @@
 package br.com.caelum.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -8,12 +7,14 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
 
+import br.com.caelum.model.Categoria;
 import br.com.caelum.model.Loja;
 import br.com.caelum.model.Produto;
 
@@ -37,30 +38,30 @@ public class ProdutoDao {
 		CriteriaQuery<Produto> query = criteriaBuilder.createQuery(Produto.class);
 		Root<Produto> root = query.from(Produto.class);
 
-		Path<String> nomePath = root.<String> get("nome");
-		Path<Integer> lojaPath = root.<Loja> get("loja").<Integer> get("id");
-		Path<Integer> categoriaPath = root.join("categorias").<Integer> get("id");
-
-		List<Predicate> predicates = new ArrayList<>();
-
+		Predicate conjuncao = criteriaBuilder.conjunction();
+		
 		if (!nome.isEmpty()) {
-			Predicate nomeIgual = criteriaBuilder.like(nomePath, nome);
-			predicates.add(nomeIgual);
+			Path<String> nomePath = root.<String> get("nome");
+			Predicate nomeIgual = criteriaBuilder.like(nomePath, "%" + nome + "%");
+			conjuncao = criteriaBuilder.and(nomeIgual);
 		}
 		if (categoriaId != null) {
-			Predicate categoriaIgual = criteriaBuilder.equal(categoriaPath, categoriaId);
-			predicates.add(categoriaIgual);
+			Join<Produto, List<Categoria>> join = root.join("categorias");
+			Path<Integer> categoriaProduto = join.get("id");
+			
+			conjuncao = criteriaBuilder.and(conjuncao,
+					criteriaBuilder.equal(categoriaProduto, categoriaId));
 		}
 		if (lojaId != null) {
-			Predicate lojaIgual = criteriaBuilder.equal(lojaPath, lojaId);
-			predicates.add(lojaIgual);
+			Path<Loja> loja = root.<Loja> get("loja");
+			Path<Integer> id = loja.<Integer> get("id");
+			
+			conjuncao = criteriaBuilder.and(conjuncao, 
+					criteriaBuilder.equal(id, lojaId));
 		}
 
-		query.where((Predicate[]) predicates.toArray(new Predicate[0]));
-
-		TypedQuery<Produto> typedQuery = em.createQuery(query);
+		TypedQuery<Produto> typedQuery = em.createQuery(query.where(conjuncao));
 		return typedQuery.getResultList();
-
 	}
 
 	public void insere(Produto produto) {
