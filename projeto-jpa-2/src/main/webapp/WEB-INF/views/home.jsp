@@ -12,15 +12,12 @@
 					<div class="col-lg-4 col-sm-6">
 						<h4>${produto.nome}</h4>
 						<p>
-							<a href="<c:url value="/produto/${produto.id}" />"
-								class="block clearfix"> <img src="${produto.linkDaFoto}"
-								width="150" height="200">
+							<a href="<c:url value="/produto/${produto.id}" />" class="block clearfix"> 
+								<img src="${produto.linkDaFoto}" width="150" height="200">
 							</a>
 						<p>
-							<a class="btn btn-default"
-								href="<c:url value="/produto/${produto.id}" />" />Saiba mais </a> <a
-								class="btn btn-default"
-								href="<c:url value="/produto/${produto.id}/form" />" />Editar </a>
+							<a class="btn btn-default" href="<c:url value="/produto/${produto.id}" />" />Saiba mais </a> 
+							<a class="btn btn-default" href="<c:url value="/produto/${produto.id}/form" />" />Editar </a>
 						</p>
 					</div>
 				</c:forEach>

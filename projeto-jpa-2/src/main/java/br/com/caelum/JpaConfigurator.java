@@ -21,8 +21,8 @@ public class JpaConfigurator {
 	public DataSource getDataSource() {
 	    DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
-	    dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-	    dataSource.setUrl("jdbc:mysql://192.168.0.10/projeto_jpa");
+	    dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+	    dataSource.setUrl("jdbc:mysql://192.168.0.10/projeto_jpa?useSSL=false");
 	    dataSource.setUsername("root");
 	    dataSource.setPassword("alphabeta");
 
