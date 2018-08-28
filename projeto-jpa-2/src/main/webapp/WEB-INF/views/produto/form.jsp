@@ -11,7 +11,7 @@
 		<div class="panel-heading">Novo produto</div>
 
 		<div class="panel-body">
-			<form action="${spring:mvcUrl(\"cadastraProduto\").build()}" method="post">
+			<form action="${spring:mvcUrl('cadastraProduto').build()}" method="post">
 				<div class="form-group">
 					<label for="nome"> Nome: </label> <input type="text"
 						class="form-control" name="nome" value="${produto.nome}">
