@@ -21,13 +21,9 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td>Cache</td>
-								<!-- Hit -->
-								<td></td>
-								<!-- Miss -->
-								<td></td>
-								<! -- Conections -->
-								<td></td>
+						    <td>${statistics.secondLevelCacheHitCount}</td>
+						    <td>${statistics.secondLevelCacheMissCount}</td>
+						    <td>${statistics.connectCount}</td>
 							</tr>
 						</tbody>
 					</table>
